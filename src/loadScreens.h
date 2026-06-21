@@ -12,5 +12,6 @@ typedef enum {
 } GameState;
 
 void initMainLevelTiles(void);
+void initMainLevelLogic(void);
 
 #endif
