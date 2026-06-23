@@ -35,6 +35,19 @@ static const palette_color_t backgroundPalettes[20] = {
     RGB(3, 3, 0)
 };
 
+//Blank hoop
+const unsigned char blankHoopMap[9] = {
+    4, 4, 4, 
+    4, 4, 4, 
+    4, 4, 4 
+};
+
+const unsigned char blankHoopAttributes[9] = {
+    0, 0, 0, 
+    0, 0, 0, 
+    0, 0, 0 
+};
+
 //Blue hoop
 const unsigned char blueHoopMap[9] = {
     0, 1, 2, // Top row
@@ -94,6 +107,86 @@ void turnHoopsRight(void){
     get_bkg_tiles(9, 1, 1, 1, &currentTileId);
 
     if (currentTileId == 1){
+            VBK_REG = 1;
+            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
+
+            // Red hoop
+            VBK_REG = 1;
+            set_bkg_tiles(3, 3, 3, 3, redHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 3, 3, 3, redHoopMap);
+
+            // Green hoop
+            VBK_REG = 1;
+            set_bkg_tiles(3, 13, 3, 3, greenHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 13, 3, 3, greenHoopMap);
+
+            // Yellow hoop
+            VBK_REG = 1;
+            set_bkg_tiles(13, 13, 3, 3, yellowHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 13, 3, 3, yellowHoopMap);
+
+            // Blue hoop
+            VBK_REG = 1;
+            set_bkg_tiles(13, 3, 3, 3, blueHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 3, 3, 3, blueHoopMap);
+
+            for (uint8_t i = 0; i < 10; i++) {
+            wait_vbl_done();
+            }
+
+            VBK_REG = 1;
+            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
+
             // Red hoop
             VBK_REG = 1;
             set_bkg_tiles(8, 1, 3, 3, redHoopAttributes);
@@ -123,6 +216,86 @@ void turnHoopsRight(void){
             set_bkg_tiles(15, 8, 3, 3, blueHoopMap);
     }
     if (currentTileId == 18){
+            VBK_REG = 1;
+            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
+
+            // Green hoop
+            VBK_REG = 1;
+            set_bkg_tiles(3, 3, 3, 3, greenHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 3, 3, 3, greenHoopMap);
+
+            // Yellow hoop
+            VBK_REG = 1;
+            set_bkg_tiles(3, 13, 3, 3, yellowHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 13, 3, 3, yellowHoopMap);
+
+            // Blue hoop
+            VBK_REG = 1;
+            set_bkg_tiles(13, 13, 3, 3, blueHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 13, 3, 3, blueHoopMap);
+
+            // Red hoop
+            VBK_REG = 1;
+            set_bkg_tiles(13, 3, 3, 3, redHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 3, 3, 3, redHoopMap);
+
+            for (uint8_t i = 0; i < 10; i++) {
+            wait_vbl_done();
+            }
+
+            VBK_REG = 1;
+            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
+
             // Green hoop
             VBK_REG = 1;
             set_bkg_tiles(8, 1, 3, 3, greenHoopAttributes);
@@ -152,6 +325,86 @@ void turnHoopsRight(void){
             set_bkg_tiles(15, 8, 3, 3, redHoopMap);        
     }
     if (currentTileId == 27){
+            VBK_REG = 1;
+            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
+
+            // Green hoop
+            VBK_REG = 1;
+            set_bkg_tiles(13, 3, 3, 3, greenHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 3, 3, 3, greenHoopMap);
+
+            // Yellow hoop
+            VBK_REG = 1;
+            set_bkg_tiles(3, 3, 3, 3, yellowHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 3, 3, 3, yellowHoopMap);
+
+            // Blue hoop
+            VBK_REG = 1;
+            set_bkg_tiles(3, 13, 3, 3, blueHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 13, 3, 3, blueHoopMap);
+
+            // Red hoop
+            VBK_REG = 1;
+            set_bkg_tiles(13, 13, 3, 3, redHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 13, 3, 3, redHoopMap);
+
+            for (uint8_t i = 0; i < 10; i++) {
+            wait_vbl_done();
+            }
+
+            VBK_REG = 1;
+            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
+
             // Yellow hoop
             VBK_REG = 1;
             set_bkg_tiles(8, 1, 3, 3, yellowHoopAttributes);
@@ -181,6 +434,86 @@ void turnHoopsRight(void){
             set_bkg_tiles(15, 8, 3, 3, greenHoopMap);        
     }
     if (currentTileId == 36){
+                        VBK_REG = 1;
+            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
+
+            // Green hoop
+            VBK_REG = 1;
+            set_bkg_tiles(13, 13, 3, 3, greenHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 13, 3, 3, greenHoopMap);
+
+            // Yellow hoop
+            VBK_REG = 1;
+            set_bkg_tiles(13, 3, 3, 3, yellowHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 3, 3, 3, yellowHoopMap);
+
+            // Blue hoop
+            VBK_REG = 1;
+            set_bkg_tiles(3, 3, 3, 3, blueHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 3, 3, 3, blueHoopMap);
+
+            // Red hoop
+            VBK_REG = 1;
+            set_bkg_tiles(3, 13, 3, 3, redHoopAttributes);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 13, 3, 3, redHoopMap);
+
+            for (uint8_t i = 0; i < 10; i++) {
+            wait_vbl_done();
+            }
+
+            VBK_REG = 1;
+            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
+
+            VBK_REG = 1;
+            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
+
+            VBK_REG = 0;
+            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
+
             // Blue hoop
             VBK_REG = 1;
             set_bkg_tiles(8, 1, 3, 3, blueHoopAttributes);
