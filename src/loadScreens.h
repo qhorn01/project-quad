@@ -11,6 +11,12 @@ typedef enum {
     GAMEOVER
 } GameState;
 
+struct Balls {
+    uint8_t x;
+    uint8_t y;
+    uint8_t paletteIndex;
+};
+
 void initMainLevelTiles(void);
 void initMainLevelLogic(void);
 
