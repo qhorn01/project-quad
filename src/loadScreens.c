@@ -1020,19 +1020,19 @@ void balls(void){
 
     animationTimer++;
 
-    if (animationTimer >= 8){
+    if (animationTimer >= 12){
         animationTimer = 0;
         frame++;
 
-        if (frame > 4) {
+        if (frame > 2) {
             frame = 0;
         }
-            uint8_t tileOffset = tileIndex + (frame * 4);
 
-            set_sprite_tile(0, tileOffset + 0);
-            set_sprite_tile(1, tileOffset + 1);
-            set_sprite_tile(2, tileOffset + 2);
-            set_sprite_tile(3, tileOffset + 3);
+        uint8_t tileOffset = tileIndex + (frame * 4);
+        set_sprite_tile(0, tileOffset + 0);
+        set_sprite_tile(1, tileOffset + 1);
+        set_sprite_tile(2, tileOffset + 2);
+        set_sprite_tile(3, tileOffset + 3);
     }
 
     set_sprite_prop(0, ball1.paletteIndex);
@@ -1097,7 +1097,7 @@ void initMainLevelTiles(void){
     VBK_REG = 0;
     set_bkg_tiles(15, 8, 3, 3, yellowHoopMap);
 
-    set_sprite_data(0, 20, BallTiles);
+    set_sprite_data(0, 24, BallTiles);
     set_sprite_palette(0, 4, spritePalettes);
 
     SHOW_SPRITES;
