@@ -11,6 +11,13 @@ typedef enum {
     GAMEOVER
 } GameState;
 
+typedef enum {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+} BallDirect;
+
 struct Balls {
     uint8_t x;
     uint8_t y;

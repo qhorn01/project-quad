@@ -8,8 +8,9 @@
 #include "loadScreens.h"
 
 GameState currentState = MAIN_LEVEL;
+BallDirect ballDirect = 2;
 
-struct Balls ball1 = {76, 84, 0};
+struct Balls ball1 = {76, 84, 3};
 
 int main(void) {
         initMainLevelTiles();

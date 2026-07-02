@@ -8,6 +8,7 @@
 #include "loadScreens.h"
 
 extern GameState currentState;
+extern BallDirect ballDirect;
 
 extern struct Balls ball1;
 
@@ -1015,35 +1016,134 @@ void turnHoopsLeft(void){
 
 void balls(void){
     static uint8_t frame = 0;
+    static uint8_t upFrame = 2;
+    static uint8_t leftFrame = 3;
+    static uint8_t rightFrame = 5;
     static uint8_t animationTimer = 0;
     static uint8_t tileIndex = 0;
 
-    animationTimer++;
+    switch (ballDirect) {
+        case UP:
+            animationTimer++;
 
-    if (animationTimer >= 12){
-        animationTimer = 0;
-        frame++;
+            if (animationTimer >= 12){
+                animationTimer = 0;
+                frame++;
+                upFrame -= 1;
 
-        if (frame > 2) {
-            frame = 0;
+                if (frame > 2) {
+                    frame = 0;
+                    upFrame = 2;
+                }
+
+                uint8_t tileOffset = tileIndex + (upFrame * 4);
+                set_sprite_tile(0, tileOffset + 0);
+                set_sprite_tile(1, tileOffset + 1);
+                set_sprite_tile(2, tileOffset + 2);
+                set_sprite_tile(3, tileOffset + 3);
+            }
+
+            set_sprite_prop(0, ball1.paletteIndex);
+            set_sprite_prop(1, ball1.paletteIndex);
+            set_sprite_prop(2, ball1.paletteIndex);
+            set_sprite_prop(3, ball1.paletteIndex);
+
+            move_sprite(0, ball1.x, ball1.y);
+            move_sprite(2, ball1.x + 8, ball1.y);
+            move_sprite(1, ball1.x, ball1.y + 8);
+            move_sprite(3, ball1.x + 8, ball1.y + 8);
+            break;
+
+        case DOWN:
+            animationTimer++;
+
+            if (animationTimer >= 12){
+                animationTimer = 0;
+                frame++;
+
+                if (frame > 2) {
+                    frame = 0;
+                }
+
+                uint8_t tileOffset = tileIndex + (frame * 4);
+                set_sprite_tile(0, tileOffset + 0);
+                set_sprite_tile(1, tileOffset + 1);
+                set_sprite_tile(2, tileOffset + 2);
+                set_sprite_tile(3, tileOffset + 3);
+            }
+
+            set_sprite_prop(0, ball1.paletteIndex);
+            set_sprite_prop(1, ball1.paletteIndex);
+            set_sprite_prop(2, ball1.paletteIndex);
+            set_sprite_prop(3, ball1.paletteIndex);
+
+            move_sprite(0, ball1.x, ball1.y);
+            move_sprite(2, ball1.x + 8, ball1.y);
+            move_sprite(1, ball1.x, ball1.y + 8);
+            move_sprite(3, ball1.x + 8, ball1.y + 8);
+            break;
+
+        case LEFT:
+            animationTimer++;
+
+            if (animationTimer >= 12){
+                animationTimer = 0;
+                frame++;
+                leftFrame++;
+
+                if (frame > 2) {
+                    frame = 0;
+                    leftFrame = 3;
+                }
+
+                uint8_t tileOffset = tileIndex + (leftFrame * 4);
+                set_sprite_tile(0, tileOffset + 0);
+                set_sprite_tile(1, tileOffset + 1);
+                set_sprite_tile(2, tileOffset + 2);
+                set_sprite_tile(3, tileOffset + 3);
+            }
+
+            set_sprite_prop(0, ball1.paletteIndex);
+            set_sprite_prop(1, ball1.paletteIndex);
+            set_sprite_prop(2, ball1.paletteIndex);
+            set_sprite_prop(3, ball1.paletteIndex);
+
+            move_sprite(0, ball1.x, ball1.y);
+            move_sprite(2, ball1.x + 8, ball1.y);
+            move_sprite(1, ball1.x, ball1.y + 8);
+            move_sprite(3, ball1.x + 8, ball1.y + 8);
+            break;
+        case RIGHT:
+            animationTimer++;
+
+            if (animationTimer >= 12){
+                animationTimer = 0;
+                frame++;
+                rightFrame -= 1;
+
+                if (frame > 2) {
+                    frame = 0;
+                    rightFrame = 5;
+                }
+
+                uint8_t tileOffset = tileIndex + (rightFrame * 4);
+                set_sprite_tile(0, tileOffset + 0);
+                set_sprite_tile(1, tileOffset + 1);
+                set_sprite_tile(2, tileOffset + 2);
+                set_sprite_tile(3, tileOffset + 3);
+            }
+
+            set_sprite_prop(0, ball1.paletteIndex);
+            set_sprite_prop(1, ball1.paletteIndex);
+            set_sprite_prop(2, ball1.paletteIndex);
+            set_sprite_prop(3, ball1.paletteIndex);
+
+            move_sprite(0, ball1.x, ball1.y);
+            move_sprite(2, ball1.x + 8, ball1.y);
+            move_sprite(1, ball1.x, ball1.y + 8);
+            move_sprite(3, ball1.x + 8, ball1.y + 8);
+            break;
         }
-
-        uint8_t tileOffset = tileIndex + (frame * 4);
-        set_sprite_tile(0, tileOffset + 0);
-        set_sprite_tile(1, tileOffset + 1);
-        set_sprite_tile(2, tileOffset + 2);
-        set_sprite_tile(3, tileOffset + 3);
-    }
-
-    set_sprite_prop(0, ball1.paletteIndex);
-    set_sprite_prop(1, ball1.paletteIndex);
-    set_sprite_prop(2, ball1.paletteIndex);
-    set_sprite_prop(3, ball1.paletteIndex);
-
-    move_sprite(0, ball1.x, ball1.y);
-    move_sprite(2, ball1.x + 8, ball1.y);
-    move_sprite(1, ball1.x, ball1.y + 8);
-    move_sprite(3, ball1.x + 8, ball1.y + 8);
 }
 
 //For Main
