@@ -1,6 +1,7 @@
 #include <gb/gb.h>
 #include <gb/cgb.h>
 #include <stdbool.h>
+#include <rand.h>
 
 #include "ballTiles.h"
 #include "mainLevelBackground.h"
@@ -8,9 +9,11 @@
 #include "loadScreens.h"
 
 GameState currentState = MAIN_LEVEL;
-BallDirect ballDirect = 2;
 
-struct Balls ball1 = {76, 84, 3};
+struct Balls ball[2] = {
+    {76, 84, 0, 0, 2, 3, 5, 0, 0, 0, 0, 0, 0},
+    {76, 84, 0, 0, 2, 3, 5, 0, 0, 0, 0, 0, 0}
+};
 
 int main(void) {
         initMainLevelTiles();

@@ -1,6 +1,7 @@
 #include <gb/gb.h>
 #include <gb/cgb.h>
 #include <stdbool.h>
+#include <rand.h>
 
 #include "ballTiles.h"
 #include "mainLevelBackground.h"
@@ -8,9 +9,8 @@
 #include "loadScreens.h"
 
 extern GameState currentState;
-extern BallDirect ballDirect;
 
-extern struct Balls ball1;
+extern struct Balls ball[2];
 
 static const palette_color_t backgroundPalettes[20] = {
     RGB(30, 26, 30),
@@ -133,60 +133,59 @@ void turnHoopsRight(void){
     get_bkg_tiles(9, 1, 1, 1, &currentTileId);
 
     if (currentTileId == 1){
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+                VBK_REG = 1;
+                set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
 
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+                VBK_REG = 0;
+                set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
 
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+                VBK_REG = 1;
+                set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
 
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+                VBK_REG = 0;
+                set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
 
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+                VBK_REG = 1;
+                set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
 
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+                VBK_REG = 0;
+                set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
 
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
+                VBK_REG = 1;
+                set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
 
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
+                VBK_REG = 0;
+                set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
 
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, redHoopAttributes);
+                // Red hoop
+                VBK_REG = 1;
+                set_bkg_tiles(3, 3, 3, 3, redHoopAttributes);
 
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, redHoopMap);
+                VBK_REG = 0;
+                set_bkg_tiles(3, 3, 3, 3, redHoopMap);
 
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, greenHoopAttributes);
+                // Green hoop
+                VBK_REG = 1;
+                set_bkg_tiles(3, 13, 3, 3, greenHoopAttributes);
 
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, greenHoopMap);
+                VBK_REG = 0;
+                set_bkg_tiles(3, 13, 3, 3, greenHoopMap);
 
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, yellowHoopAttributes);
+                // Yellow hoop
+                VBK_REG = 1;
+                set_bkg_tiles(13, 13, 3, 3, yellowHoopAttributes);
 
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, yellowHoopMap);
+                VBK_REG = 0;
+                set_bkg_tiles(13, 13, 3, 3, yellowHoopMap);
 
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, blueHoopAttributes);
+                // Blue hoop
+                VBK_REG = 1;
+                set_bkg_tiles(13, 3, 3, 3, blueHoopAttributes);
 
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, blueHoopMap);
-
+                VBK_REG = 0;
+                set_bkg_tiles(13, 3, 3, 3, blueHoopMap);
             for (uint8_t i = 0; i < 12; i++) {
-            wait_vbl_done();
+                wait_vbl_done();
             }
 
             VBK_REG = 1;
@@ -1014,135 +1013,163 @@ void turnHoopsLeft(void){
     }
 }
 
-void balls(void){
-    static uint8_t frame = 0;
-    static uint8_t upFrame = 2;
-    static uint8_t leftFrame = 3;
-    static uint8_t rightFrame = 5;
-    static uint8_t animationTimer = 0;
-    static uint8_t tileIndex = 0;
+void balls(struct Balls *b, uint8_t i){
+    b->baseSprite = i * 4;
+    b->ballSpeed = 1;
+    switch (b->ballDirect){
+            case 0:
+                if (b->y != 28){
+                    b->spriteAnimationTimer++;
+                    b->y -= b->ballSpeed;
+                    
+                    if (b->spriteAnimationTimer >= 12){
+                        b->spriteAnimationTimer = 0;
+                        b->frame++;
+                        b->upFrame -= 1;
 
-    switch (ballDirect) {
-        case UP:
-            animationTimer++;
+                        if (b->frame > 2) {
+                            b->frame = 0;
+                            b->upFrame = 2;
+                        }
 
-            if (animationTimer >= 12){
-                animationTimer = 0;
-                frame++;
-                upFrame -= 1;
+                        b->tileOffset = b->tileIndex + (b->upFrame * 4);
+                        set_sprite_tile(b->baseSprite + 0, b->tileOffset + 0);
+                        set_sprite_tile(b->baseSprite + 1, b->tileOffset + 1);
+                        set_sprite_tile(b->baseSprite + 2, b->tileOffset + 2);
+                        set_sprite_tile(b->baseSprite + 3, b->tileOffset + 3);
+                    }
 
-                if (frame > 2) {
-                    frame = 0;
-                    upFrame = 2;
+                    set_sprite_prop(b->baseSprite + 0, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 1, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 2, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 3, b->paletteIndex);
+
+                    move_sprite(b->baseSprite + 0, b->x, b->y);
+                    move_sprite(b->baseSprite + 2, b->x + 8, b->y);
+                    move_sprite(b->baseSprite + 1, b->x, b->y + 8);
+                    move_sprite(b->baseSprite + 3, b->x + 8, b->y + 8);
+                } else {
+                    b->x = 76;
+                    b->y = 84;
+                    b->paletteIndex = (rand() % 4);
+                    b->ballDirect = (rand() % 4);
                 }
+                break;
+                
+            case 1:
+                if (b->y != 144) {
+                    b->spriteAnimationTimer++;
+                    b->y += b->ballSpeed;
 
-                uint8_t tileOffset = tileIndex + (upFrame * 4);
-                set_sprite_tile(0, tileOffset + 0);
-                set_sprite_tile(1, tileOffset + 1);
-                set_sprite_tile(2, tileOffset + 2);
-                set_sprite_tile(3, tileOffset + 3);
-            }
+                    if (b->spriteAnimationTimer >= 12){
+                        b->spriteAnimationTimer = 0;
+                        b->frame++;
 
-            set_sprite_prop(0, ball1.paletteIndex);
-            set_sprite_prop(1, ball1.paletteIndex);
-            set_sprite_prop(2, ball1.paletteIndex);
-            set_sprite_prop(3, ball1.paletteIndex);
+                        if (b->frame > 2) {
+                            b->frame = 0;
+                        }
 
-            move_sprite(0, ball1.x, ball1.y);
-            move_sprite(2, ball1.x + 8, ball1.y);
-            move_sprite(1, ball1.x, ball1.y + 8);
-            move_sprite(3, ball1.x + 8, ball1.y + 8);
-            break;
+                        b->tileOffset = b->tileIndex + (b->frame * 4);
+                        set_sprite_tile(b->baseSprite + 0, b->tileOffset + 0);
+                        set_sprite_tile(b->baseSprite + 1, b->tileOffset + 1);
+                        set_sprite_tile(b->baseSprite + 2, b->tileOffset + 2);
+                        set_sprite_tile(b->baseSprite + 3, b->tileOffset + 3);
+                    }
 
-        case DOWN:
-            animationTimer++;
+                    set_sprite_prop(b->baseSprite + 0, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 1, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 2, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 3, b->paletteIndex);
 
-            if (animationTimer >= 12){
-                animationTimer = 0;
-                frame++;
-
-                if (frame > 2) {
-                    frame = 0;
+                    move_sprite(b->baseSprite + 0, b->x, b->y);
+                    move_sprite(b->baseSprite + 2, b->x + 8, b->y);
+                    move_sprite(b->baseSprite + 1, b->x, b->y + 8);
+                    move_sprite(b->baseSprite + 3, b->x + 8, b->y + 8);
+                } else {
+                    b->x = 76;
+                    b->y = 84;
+                    b->paletteIndex = (rand() % 4);
+                    b->ballDirect = (rand() % 4);
                 }
+                break;
 
-                uint8_t tileOffset = tileIndex + (frame * 4);
-                set_sprite_tile(0, tileOffset + 0);
-                set_sprite_tile(1, tileOffset + 1);
-                set_sprite_tile(2, tileOffset + 2);
-                set_sprite_tile(3, tileOffset + 3);
-            }
+            case 2:
+                if (b->x != 24) {
+                    b->spriteAnimationTimer++;
+                    b->x -= b->ballSpeed;
 
-            set_sprite_prop(0, ball1.paletteIndex);
-            set_sprite_prop(1, ball1.paletteIndex);
-            set_sprite_prop(2, ball1.paletteIndex);
-            set_sprite_prop(3, ball1.paletteIndex);
+                    if (b->spriteAnimationTimer >= 12){
+                        b->spriteAnimationTimer = 0;
+                        b->frame++;
+                        b->leftFrame++;
 
-            move_sprite(0, ball1.x, ball1.y);
-            move_sprite(2, ball1.x + 8, ball1.y);
-            move_sprite(1, ball1.x, ball1.y + 8);
-            move_sprite(3, ball1.x + 8, ball1.y + 8);
-            break;
+                        if (b->frame > 2) {
+                            b->frame = 0;
+                            b->leftFrame = 3;
+                        }
 
-        case LEFT:
-            animationTimer++;
+                        b->tileOffset = b->tileIndex + (b->leftFrame * 4);
+                        set_sprite_tile(b->baseSprite + 0, b->tileOffset + 0);
+                        set_sprite_tile(b->baseSprite + 1, b->tileOffset + 1);
+                        set_sprite_tile(b->baseSprite + 2, b->tileOffset + 2);
+                        set_sprite_tile(b->baseSprite + 3, b->tileOffset + 3);
+                    }
 
-            if (animationTimer >= 12){
-                animationTimer = 0;
-                frame++;
-                leftFrame++;
+                    set_sprite_prop(b->baseSprite + 0, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 1, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 2, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 3, b->paletteIndex);
 
-                if (frame > 2) {
-                    frame = 0;
-                    leftFrame = 3;
+                    move_sprite(b->baseSprite + 0, b->x, b->y);
+                    move_sprite(b->baseSprite + 2, b->x + 8, b->y);
+                    move_sprite(b->baseSprite + 1, b->x, b->y + 8);
+                    move_sprite(b->baseSprite + 3, b->x + 8, b->y + 8);
+                } else {
+                    b->x = 76;
+                    b->y = 84;
+                    b->paletteIndex = (rand() % 4);
+                    b->ballDirect = (rand() % 4);
                 }
+                break;
 
-                uint8_t tileOffset = tileIndex + (leftFrame * 4);
-                set_sprite_tile(0, tileOffset + 0);
-                set_sprite_tile(1, tileOffset + 1);
-                set_sprite_tile(2, tileOffset + 2);
-                set_sprite_tile(3, tileOffset + 3);
-            }
+            case 3:
+                if (b->x != 132) {
+                    b->spriteAnimationTimer++;
+                    b->x += b->ballSpeed;
 
-            set_sprite_prop(0, ball1.paletteIndex);
-            set_sprite_prop(1, ball1.paletteIndex);
-            set_sprite_prop(2, ball1.paletteIndex);
-            set_sprite_prop(3, ball1.paletteIndex);
+                    if (b->spriteAnimationTimer >= 12){
+                        b->spriteAnimationTimer = 0;
+                        b->frame++;
+                        b->rightFrame -= 1;
 
-            move_sprite(0, ball1.x, ball1.y);
-            move_sprite(2, ball1.x + 8, ball1.y);
-            move_sprite(1, ball1.x, ball1.y + 8);
-            move_sprite(3, ball1.x + 8, ball1.y + 8);
-            break;
-        case RIGHT:
-            animationTimer++;
+                        if (b->frame > 2) {
+                            b->frame = 0;
+                            b->rightFrame = 5;
+                        }
 
-            if (animationTimer >= 12){
-                animationTimer = 0;
-                frame++;
-                rightFrame -= 1;
+                        b->tileOffset = b->tileIndex + (b->rightFrame * 4);
+                        set_sprite_tile(b->baseSprite + 0, b->tileOffset + 0);
+                        set_sprite_tile(b->baseSprite + 1, b->tileOffset + 1);
+                        set_sprite_tile(b->baseSprite + 2, b->tileOffset + 2);
+                        set_sprite_tile(b->baseSprite + 3, b->tileOffset + 3);
+                    }
 
-                if (frame > 2) {
-                    frame = 0;
-                    rightFrame = 5;
+                    set_sprite_prop(b->baseSprite + 0, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 1, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 2, b->paletteIndex);
+                    set_sprite_prop(b->baseSprite + 3, b->paletteIndex);
+
+                    move_sprite(b->baseSprite + 0, b->x, b->y);
+                    move_sprite(b->baseSprite + 2, b->x + 8, b->y);
+                    move_sprite(b->baseSprite + 1, b->x, b->y + 8);
+                    move_sprite(b->baseSprite + 3, b->x + 8, b->y + 8);
+                } else {
+                    b->x = 76;
+                    b->y = 84;
+                    b->paletteIndex = (rand() % 4);
+                    b->ballDirect = (rand() % 4);
                 }
-
-                uint8_t tileOffset = tileIndex + (rightFrame * 4);
-                set_sprite_tile(0, tileOffset + 0);
-                set_sprite_tile(1, tileOffset + 1);
-                set_sprite_tile(2, tileOffset + 2);
-                set_sprite_tile(3, tileOffset + 3);
-            }
-
-            set_sprite_prop(0, ball1.paletteIndex);
-            set_sprite_prop(1, ball1.paletteIndex);
-            set_sprite_prop(2, ball1.paletteIndex);
-            set_sprite_prop(3, ball1.paletteIndex);
-
-            move_sprite(0, ball1.x, ball1.y);
-            move_sprite(2, ball1.x + 8, ball1.y);
-            move_sprite(1, ball1.x, ball1.y + 8);
-            move_sprite(3, ball1.x + 8, ball1.y + 8);
-            break;
+                break;
         }
 }
 
@@ -1200,6 +1227,9 @@ void initMainLevelTiles(void){
     set_sprite_data(0, 24, BallTiles);
     set_sprite_palette(0, 4, spritePalettes);
 
+    ball[0].ballDirect = 2;
+    ball[1].ballDirect = 3;
+
     SHOW_SPRITES;
     SHOW_BKG;
     DISPLAY_ON;
@@ -1208,8 +1238,10 @@ void initMainLevelTiles(void){
 void initMainLevelLogic(void){
     uint8_t input = joypad();
     static uint8_t previousInput = 0;
+    static uint8_t ballResetTimer = 0;
 
-    balls();
+    balls(&ball[0], 0); // first ball
+    balls(&ball[1], 1); // second ball
 
     if ((input & J_RIGHT) && !(previousInput & J_RIGHT)){
         turnHoopsRight();
