@@ -12,6 +12,8 @@ extern GameState currentState;
 
 extern struct Balls ball[2];
 
+extern uint8_t turnHoops;
+
 static const palette_color_t backgroundPalettes[20] = {
     RGB(30, 26, 30),
     RGB(14, 25, 30),
@@ -62,965 +64,184 @@ static const palette_color_t spritePalettes[16] = {
 };
 
 //Blank hoop
-const unsigned char blankHoopMap[9] = {
+const uint8_t blankHoopMap[9] = {
     4, 4, 4, 
     4, 4, 4, 
     4, 4, 4 
 };
 
-const unsigned char blankHoopAttributes[9] = {
+const uint8_t blankHoopAttributes[9] = {
     0, 0, 0, 
     0, 0, 0, 
     0, 0, 0 
 };
 
 //Blue hoop
-const unsigned char blueHoopMap[9] = {
+const uint8_t blueHoopMap[9] = {
     0, 1, 2, // Top row
     3, 4, 5, // Middle row
     6, 7, 8  // Bottom row
 };
 
-const unsigned char blueHoopAttributes[9] = {
+const uint8_t blueHoopAttributes[9] = {
     0, 0, 0, 
     0, 0, 0, 
     0, 0, 0 
 };
 
 //Red hoop
-const unsigned char redHoopMap[9] = {
+const uint8_t redHoopMap[9] = {
     17, 18, 19, // Top row
     20, 21, 22, // Middle row
     23, 24, 25  // Bottom row
 };
 
-const unsigned char redHoopAttributes[9] = {
+const uint8_t redHoopAttributes[9] = {
     1, 1, 1, 
     1, 1, 1, 
     1, 1, 1 
 };
 
 //Green hoop
-const unsigned char greenHoopMap[9] = {
+const uint8_t greenHoopMap[9] = {
     26, 27, 28, // Top row
     29, 30, 31, // Middle row
     32, 33, 34  // Bottom row
 };
 
-const unsigned char greenHoopAttributes[9] = {
+const uint8_t greenHoopAttributes[9] = {
     2, 2, 2, 
     2, 2, 2, 
     2, 2, 2 
 };
 
 //Yellow hoop
-const unsigned char yellowHoopMap[9] = {
+const uint8_t yellowHoopMap[9] = {
     35, 36, 37, // Top row
     38, 39, 40, // Middle row
     41, 42, 43  // Bottom row
 };
 
-const unsigned char yellowHoopAttributes[9] = {
+const uint8_t yellowHoopAttributes[9] = {
     3, 3, 3, 
     3, 3, 3, 
     3, 3, 3 
 };
 
-void turnHoopsRight(void){
-    uint8_t currentTileId;
-    // Fetch the 1 tile at X=9, Y=1 from the live screen 
-    // and store it in our 'currentTileId' variable
-    get_bkg_tiles(9, 1, 1, 1, &currentTileId);
-
-    if (currentTileId == 1){
-                VBK_REG = 1;
-                set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-                VBK_REG = 0;
-                set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-                VBK_REG = 1;
-                set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-                VBK_REG = 0;
-                set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-                VBK_REG = 1;
-                set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-                VBK_REG = 0;
-                set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-                VBK_REG = 1;
-                set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-                VBK_REG = 0;
-                set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-                // Red hoop
-                VBK_REG = 1;
-                set_bkg_tiles(3, 3, 3, 3, redHoopAttributes);
-
-                VBK_REG = 0;
-                set_bkg_tiles(3, 3, 3, 3, redHoopMap);
-
-                // Green hoop
-                VBK_REG = 1;
-                set_bkg_tiles(3, 13, 3, 3, greenHoopAttributes);
-
-                VBK_REG = 0;
-                set_bkg_tiles(3, 13, 3, 3, greenHoopMap);
-
-                // Yellow hoop
-                VBK_REG = 1;
-                set_bkg_tiles(13, 13, 3, 3, yellowHoopAttributes);
-
-                VBK_REG = 0;
-                set_bkg_tiles(13, 13, 3, 3, yellowHoopMap);
-
-                // Blue hoop
-                VBK_REG = 1;
-                set_bkg_tiles(13, 3, 3, 3, blueHoopAttributes);
-
-                VBK_REG = 0;
-                set_bkg_tiles(13, 3, 3, 3, blueHoopMap);
-            for (uint8_t i = 0; i < 12; i++) {
-                wait_vbl_done();
-            }
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, redHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, blueHoopMap);
-    }
-    if (currentTileId == 18){
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, redHoopMap);
-
-            for (uint8_t i = 0; i < 12; i++) {
-            wait_vbl_done();
-            }
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, redHoopMap);        
-    }
-    if (currentTileId == 27){
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, redHoopMap);
-
-            for (uint8_t i = 0; i < 12; i++) {
-            wait_vbl_done();
-            }
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, redHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, greenHoopMap);        
-    }
-    if (currentTileId == 36){
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, redHoopMap);
-
-            for (uint8_t i = 0; i < 12; i++) {
-            wait_vbl_done();
-            }
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, redHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, yellowHoopMap);        
-    }
+void setHoop(uint8_t x, uint8_t y, const uint8_t *hoopAttributes, const uint8_t *hoopMap){
+    VBK_REG = 1;
+    set_bkg_tiles(x, y, 3, 3, hoopAttributes);
+
+    VBK_REG = 0;
+    set_bkg_tiles(x, y, 3, 3, hoopMap);
 }
 
-void turnHoopsLeft(void){
-    uint8_t currentTileId;
-    // Fetch the 1 tile at X=9, Y=1 from the live screen 
-    // and store it in our 'currentTileId' variable
-    get_bkg_tiles(9, 1, 1, 1, &currentTileId);
+void rotateHoops(uint8_t index){
+    switch(index){
+        case 1:
+            setHoop(13, 3, blankHoopAttributes, blankHoopMap);
+            setHoop(13, 13, blankHoopAttributes, blankHoopMap);
+            setHoop(3, 13, blankHoopAttributes, blankHoopMap);
+            setHoop(3, 3, blankHoopAttributes, blankHoopMap);
 
-    if (currentTileId == 27){
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+            setHoop(8, 1, blueHoopAttributes, blueHoopMap);
+            setHoop(15, 8, yellowHoopAttributes, yellowHoopMap);
+            setHoop(8, 15, greenHoopAttributes, greenHoopMap);
+            setHoop(1, 8, redHoopAttributes, redHoopMap);
+            break;
+        case 2:
+            setHoop(13, 3, blueHoopAttributes, blueHoopMap);
+            setHoop(13, 13, yellowHoopAttributes, yellowHoopMap);
+            setHoop(3, 13, greenHoopAttributes, greenHoopMap);
+            setHoop(3, 3, redHoopAttributes, redHoopMap);
 
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
+            setHoop(8, 1, blankHoopAttributes, blankHoopMap);
+            setHoop(15, 8, blankHoopAttributes, blankHoopMap);
+            setHoop(8, 15, blankHoopAttributes, blankHoopMap);
+            setHoop(1, 8, blankHoopAttributes, blankHoopMap);
+            break;
+        case 3:
+            setHoop(13, 3, blankHoopAttributes, blankHoopMap);
+            setHoop(13, 13, blankHoopAttributes, blankHoopMap);
+            setHoop(3, 13, blankHoopAttributes, blankHoopMap);
+            setHoop(3, 3, blankHoopAttributes, blankHoopMap);
 
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+            setHoop(8, 1, redHoopAttributes, redHoopMap);
+            setHoop(15, 8, blueHoopAttributes, blueHoopMap);
+            setHoop(8, 15, yellowHoopAttributes, yellowHoopMap);
+            setHoop(1, 8, greenHoopAttributes, greenHoopMap);
+            break;
+        case 4:
+            setHoop(13, 3, redHoopAttributes, redHoopMap);
+            setHoop(13, 13, blueHoopAttributes, blueHoopMap);
+            setHoop(3, 13, yellowHoopAttributes, yellowHoopMap);
+            setHoop(3, 3, greenHoopAttributes, greenHoopMap);
 
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
+            setHoop(8, 1, blankHoopAttributes, blankHoopMap);
+            setHoop(15, 8, blankHoopAttributes, blankHoopMap);
+            setHoop(8, 15, blankHoopAttributes, blankHoopMap);
+            setHoop(1, 8, blankHoopAttributes, blankHoopMap);
+            break;
+        case 5:
+            setHoop(13, 3, blankHoopAttributes, blankHoopMap);
+            setHoop(13, 13, blankHoopAttributes, blankHoopMap);
+            setHoop(3, 13, blankHoopAttributes, blankHoopMap);
+            setHoop(3, 3, blankHoopAttributes, blankHoopMap);
 
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+            setHoop(8, 1, greenHoopAttributes, greenHoopMap);
+            setHoop(15, 8, redHoopAttributes, redHoopMap);
+            setHoop(8, 15, blueHoopAttributes, blueHoopMap);
+            setHoop(1, 8, yellowHoopAttributes, yellowHoopMap);
+            break;
+        case 6:
+            setHoop(13, 3, greenHoopAttributes, greenHoopMap);
+            setHoop(13, 13, redHoopAttributes, redHoopMap);
+            setHoop(3, 13, blueHoopAttributes, blueHoopMap);
+            setHoop(3, 3, yellowHoopAttributes, yellowHoopMap);
 
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
+            setHoop(8, 1, blankHoopAttributes, blankHoopMap);
+            setHoop(15, 8, blankHoopAttributes, blankHoopMap);
+            setHoop(8, 15, blankHoopAttributes, blankHoopMap);
+            setHoop(1, 8, blankHoopAttributes, blankHoopMap);
+            break;
+        case 7:
+            setHoop(13, 3, blankHoopAttributes, blankHoopMap);
+            setHoop(13, 13, blankHoopAttributes, blankHoopMap);
+            setHoop(3, 13, blankHoopAttributes, blankHoopMap);
+            setHoop(3, 3, blankHoopAttributes, blankHoopMap);
 
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
+            setHoop(8, 1, yellowHoopAttributes, yellowHoopMap);
+            setHoop(15, 8, greenHoopAttributes, greenHoopMap);
+            setHoop(8, 15, redHoopAttributes, redHoopMap);
+            setHoop(1, 8, blueHoopAttributes, blueHoopMap);
+            break;
+        case 8:
+            setHoop(13, 3, yellowHoopAttributes, yellowHoopMap);
+            setHoop(13, 13, greenHoopAttributes, greenHoopMap);
+            setHoop(3, 13, redHoopAttributes, redHoopMap);
+            setHoop(3, 3, blueHoopAttributes, blueHoopMap);
 
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, redHoopMap);
-
-            for (uint8_t i = 0; i < 12; i++) {
-            wait_vbl_done();
-            }
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, redHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, blueHoopMap);
+            setHoop(8, 1, blankHoopAttributes, blankHoopMap);
+            setHoop(15, 8, blankHoopAttributes, blankHoopMap);
+            setHoop(8, 15, blankHoopAttributes, blankHoopMap);
+            setHoop(1, 8, blankHoopAttributes, blankHoopMap);
+            break;
     }
-    if (currentTileId == 36){
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
 
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, redHoopMap);
-
-            for (uint8_t i = 0; i < 12; i++) {
-            wait_vbl_done();
-            }
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, redHoopMap);        
-    }
-    if (currentTileId == 1){
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, redHoopMap);
-
-            for (uint8_t i = 0; i < 12; i++) {
-            wait_vbl_done();
-            }
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, redHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, greenHoopMap);        
-    }
-    if (currentTileId == 18){
-                        VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, blankHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, redHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, yellowHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, blueHoopMap);
-
-            for (uint8_t i = 0; i < 12; i++) {
-            wait_vbl_done();
-            }
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(13, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 13, 3, 3, blankHoopMap);
-
-            VBK_REG = 1;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            VBK_REG = 0;
-            set_bkg_tiles(3, 3, 3, 3, blankHoopMap);
-
-            // Blue hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 1, 3, 3, blueHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 1, 3, 3, blueHoopMap);
-
-            // Red hoop
-            VBK_REG = 1;
-            set_bkg_tiles(1, 8, 3, 3, redHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(1, 8, 3, 3, redHoopMap);
-
-            // Green hoop
-            VBK_REG = 1;
-            set_bkg_tiles(8, 15, 3, 3, greenHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(8, 15, 3, 3, greenHoopMap);
-
-            // Yellow hoop
-            VBK_REG = 1;
-            set_bkg_tiles(15, 8, 3, 3, yellowHoopAttributes);
-
-            VBK_REG = 0;
-            set_bkg_tiles(15, 8, 3, 3, yellowHoopMap);        
-    }
 }
 
 void balls(struct Balls *b, uint8_t i){
     b->baseSprite = i * 4;
-    b->ballSpeed = 1;
     switch (b->ballDirect){
             case 0:
                 if (b->y != 28){
                     b->spriteAnimationTimer++;
-                    b->y -= b->ballSpeed;
+                    b->ballFrame++;
+
+                    if (b->ballFrame > b->ballSpeed){
+                        b->ballFrame = 0;
+                        b->y -= 1;
+                    }
                     
                     if (b->spriteAnimationTimer >= 12){
                         b->spriteAnimationTimer = 0;
@@ -1059,7 +280,12 @@ void balls(struct Balls *b, uint8_t i){
             case 1:
                 if (b->y != 144) {
                     b->spriteAnimationTimer++;
-                    b->y += b->ballSpeed;
+                    b->ballFrame++;
+                    
+                    if (b->ballFrame > b->ballSpeed){
+                        b->ballFrame = 0;
+                        b->y += 1;
+                    }
 
                     if (b->spriteAnimationTimer >= 12){
                         b->spriteAnimationTimer = 0;
@@ -1096,7 +322,12 @@ void balls(struct Balls *b, uint8_t i){
             case 2:
                 if (b->x != 24) {
                     b->spriteAnimationTimer++;
-                    b->x -= b->ballSpeed;
+                    b->ballFrame++;
+
+                    if (b->ballFrame > b->ballSpeed){
+                        b->ballFrame = 0;
+                        b->x -= 1;
+                    }
 
                     if (b->spriteAnimationTimer >= 12){
                         b->spriteAnimationTimer = 0;
@@ -1135,7 +366,12 @@ void balls(struct Balls *b, uint8_t i){
             case 3:
                 if (b->x != 132) {
                     b->spriteAnimationTimer++;
-                    b->x += b->ballSpeed;
+                    b->ballFrame++;
+
+                    if (b->ballFrame > b->ballSpeed){
+                        b->ballFrame = 0;
+                        b->x += 1;
+                    }
 
                     if (b->spriteAnimationTimer >= 12){
                         b->spriteAnimationTimer = 0;
@@ -1178,12 +414,6 @@ void initMainLevelTiles(void){
     wait_vbl_done();
     DISPLAY_OFF;
 
-    static uint8_t hoopX = 0;
-    static uint8_t hoopY = 0;
-
-    static uint8_t ballX = 50;
-    static uint8_t ballY = 50;
-
     BGP_REG = 0xE4;
 
     set_bkg_palette(0, 5, backgroundPalettes);
@@ -1196,33 +426,10 @@ void initMainLevelTiles(void){
     VBK_REG = 0;
     set_bkg_tiles(0, 0, 20, 18, MainLevelBackgroundPLN0);
 
-    // Blue hoop
-    VBK_REG = 1;
-    set_bkg_tiles(8, 1, 3, 3, blueHoopAttributes);
-
-    VBK_REG = 0;
-    set_bkg_tiles(8, 1, 3, 3, blueHoopMap);
-
-    // Red hoop
-    VBK_REG = 1;
-    set_bkg_tiles(1, 8, 3, 3, redHoopAttributes);
-
-    VBK_REG = 0;
-    set_bkg_tiles(1, 8, 3, 3, redHoopMap);
-
-    // Green hoop
-    VBK_REG = 1;
-    set_bkg_tiles(8, 15, 3, 3, greenHoopAttributes);
-
-    VBK_REG = 0;
-    set_bkg_tiles(8, 15, 3, 3, greenHoopMap);
-
-    // Yellow hoop
-    VBK_REG = 1;
-    set_bkg_tiles(15, 8, 3, 3, yellowHoopAttributes);
-
-    VBK_REG = 0;
-    set_bkg_tiles(15, 8, 3, 3, yellowHoopMap);
+    setHoop(8, 1, blueHoopAttributes, blueHoopMap);
+    setHoop(1, 8, redHoopAttributes, redHoopMap);
+    setHoop(8, 15, greenHoopAttributes, greenHoopMap);
+    setHoop(15, 8, yellowHoopAttributes, yellowHoopMap);
 
     set_sprite_data(0, 24, BallTiles);
     set_sprite_palette(0, 4, spritePalettes);
@@ -1238,17 +445,29 @@ void initMainLevelTiles(void){
 void initMainLevelLogic(void){
     uint8_t input = joypad();
     static uint8_t previousInput = 0;
-    static uint8_t ballResetTimer = 0;
+    static bool ballSpawn = false;
 
     balls(&ball[0], 0); // first ball
-    balls(&ball[1], 1); // second ball
+
+    //balls(&ball[1], 1); // second ball
 
     if ((input & J_RIGHT) && !(previousInput & J_RIGHT)){
-        turnHoopsRight();
+        turnHoops++;
+        if (turnHoops > 9){
+            turnHoops = 1;
+            rotateHoops(turnHoops);
+        } else {
+            rotateHoops(turnHoops);
+        }
     }
     if ((input & J_LEFT) && !(previousInput & J_LEFT)){
-        turnHoopsLeft();
+        turnHoops--;
+        if (turnHoops < 1){
+            turnHoops = 9;
+            rotateHoops(turnHoops);
+        } else {
+            rotateHoops(turnHoops);
+        }
     }
-
     previousInput = input;
 }

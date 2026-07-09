@@ -11,9 +11,11 @@
 GameState currentState = MAIN_LEVEL;
 
 struct Balls ball[2] = {
-    {76, 84, 0, 0, 2, 3, 5, 0, 0, 0, 0, 0, 0},
-    {76, 84, 0, 0, 2, 3, 5, 0, 0, 0, 0, 0, 0}
+    {76, 84, 0, 0, 2, 3, 5, 0, 0, 0, 0, 0, 0, 2},
+    {76, 84, 0, 0, 2, 3, 5, 0, 0, 0, 0, 0, 0, 2}
 };
+
+uint8_t turnHoops = 1;
 
 int main(void) {
         initMainLevelTiles();

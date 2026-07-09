@@ -24,6 +24,7 @@ struct Balls {
     uint8_t baseSprite;
     uint8_t tileOffset;
     uint8_t ballDirect;
+    uint8_t ballFrame;
     uint8_t ballSpeed;
 };
 
