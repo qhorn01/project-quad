@@ -230,7 +230,7 @@ void rotateHoops(uint8_t index){
 
 }
 
-void balls(struct Balls *b, uint8_t i){
+void balls(struct Balls *b, uint8_t i, uint8_t ballSpeed){
     b->baseSprite = i * 4;
     switch (b->ballDirect){
             case 0:
@@ -238,7 +238,7 @@ void balls(struct Balls *b, uint8_t i){
                     b->spriteAnimationTimer++;
                     b->ballFrame++;
 
-                    if (b->ballFrame > b->ballSpeed){
+                    if (b->ballFrame > ballSpeed){
                         b->ballFrame = 0;
                         b->y -= 1;
                     }
@@ -282,7 +282,7 @@ void balls(struct Balls *b, uint8_t i){
                     b->spriteAnimationTimer++;
                     b->ballFrame++;
                     
-                    if (b->ballFrame > b->ballSpeed){
+                    if (b->ballFrame > ballSpeed){
                         b->ballFrame = 0;
                         b->y += 1;
                     }
@@ -324,7 +324,7 @@ void balls(struct Balls *b, uint8_t i){
                     b->spriteAnimationTimer++;
                     b->ballFrame++;
 
-                    if (b->ballFrame > b->ballSpeed){
+                    if (b->ballFrame > ballSpeed){
                         b->ballFrame = 0;
                         b->x -= 1;
                     }
@@ -368,7 +368,7 @@ void balls(struct Balls *b, uint8_t i){
                     b->spriteAnimationTimer++;
                     b->ballFrame++;
 
-                    if (b->ballFrame > b->ballSpeed){
+                    if (b->ballFrame > ballSpeed){
                         b->ballFrame = 0;
                         b->x += 1;
                     }
@@ -418,7 +418,7 @@ void initMainLevelTiles(void){
 
     set_bkg_palette(0, 5, backgroundPalettes);
 
-    set_bkg_data(0, 53, bgTiles);
+    set_bkg_data(0, 58, bgTiles);
 
     VBK_REG = 1;
     set_bkg_tiles(0, 0, 20, 18, MainLevelBackgroundPLN1);
@@ -447,9 +447,9 @@ void initMainLevelLogic(void){
     static uint8_t previousInput = 0;
     static bool ballSpawn = false;
 
-    balls(&ball[0], 0); // first ball
+    balls(&ball[0], 0, 2); // first ball
 
-    //balls(&ball[1], 1); // second ball
+    //balls(&ball[1], 1, 2); // second ball
 
     if ((input & J_RIGHT) && !(previousInput & J_RIGHT)){
         turnHoops++;

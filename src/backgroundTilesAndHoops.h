@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 52
+  Tiles                : 0 to 57
 
   Palette colors       : Included.
   SGB Palette          : None.
@@ -154,6 +154,11 @@
 #define bgTilesCGB50 0
 #define bgTilesCGB51 0
 #define bgTilesCGB52 0
+#define bgTilesCGB53 0
+#define bgTilesCGB54 1
+#define bgTilesCGB55 2
+#define bgTilesCGB56 3
+#define bgTilesCGB57 4
 /* Start of tile array. */
 extern const unsigned char bgTiles[];
 
