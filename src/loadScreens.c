@@ -130,9 +130,9 @@ const uint8_t yellowHoopAttributes[9] = {
 };
 
 void setScoreTile(uint8_t x, uint8_t score){
-
+    uint8_t attribute = 0x04;
     VBK_REG = 1;
-    set_bkg_tiles(x, 0, 1, 1, &score);
+    set_bkg_tiles(x, 0, 1, 1, &attribute);
 
     VBK_REG = 0;
     set_bkg_tiles(x, 0, 1, 1, &score);
@@ -162,10 +162,15 @@ void scoreTiles(void){
         hundreds = 0;
     }
 
-    setScoreTile(16, thousands);
-    setScoreTile(17, hundreds+58);
-    setScoreTile(18, tens+58);
-    setScoreTile(19, ones+58);
+    uint8_t onesOffset = ones + 58;
+    uint8_t tensOffset = tens + 58;
+    uint8_t hundredsOffset = hundreds + 58;
+    uint8_t thousandsOffset = thousands + 58;
+
+    setScoreTile(16, thousandsOffset);
+    setScoreTile(17, hundredsOffset);
+    setScoreTile(18, tensOffset);
+    setScoreTile(19, onesOffset);
 }
 
 void setHoop(uint8_t x, uint8_t y, const uint8_t *hoopAttributes, const uint8_t *hoopMap){
@@ -418,7 +423,7 @@ void balls(struct Balls *b, uint8_t i, uint8_t ballSpeed){
                     move_sprite(b->baseSprite + 1, b->x, b->y + 8);
                     move_sprite(b->baseSprite + 3, b->x + 8, b->y + 8);
                 } else {
-                    get_bkg_tiles(2, 18, 1, 1, &currentTileId);
+                    get_bkg_tiles(2, 8, 1, 1, &currentTileId);
                     if (b->paletteIndex == 0 && currentTileId == 1){
                         scoreTiles();
                     } else if (b->paletteIndex == 1 && currentTileId == 18){
@@ -529,7 +534,7 @@ void initMainLevelLogic(void){
     static uint8_t previousInput = 0;
     static bool ballSpawn = false;
 
-    balls(&ball[0], 0, 2); // first ball
+    balls(&ball[0], 0, 1); // first ball
 
     //balls(&ball[1], 1, 2); // second ball
 
