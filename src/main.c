@@ -16,6 +16,7 @@ struct Balls ball[2] = {
 };
 
 uint8_t turnHoops = 1;
+uint16_t score = 0;
 
 int main(void) {
         initMainLevelTiles();

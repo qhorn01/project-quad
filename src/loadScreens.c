@@ -13,6 +13,7 @@ extern GameState currentState;
 extern struct Balls ball[2];
 
 extern uint8_t turnHoops;
+extern uint16_t score;
 
 static const palette_color_t backgroundPalettes[20] = {
     RGB(30, 26, 30),
@@ -128,6 +129,45 @@ const uint8_t yellowHoopAttributes[9] = {
     3, 3, 3 
 };
 
+void setScoreTile(uint8_t x, uint8_t score){
+
+    VBK_REG = 1;
+    set_bkg_tiles(x, 0, 1, 1, &score);
+
+    VBK_REG = 0;
+    set_bkg_tiles(x, 0, 1, 1, &score);
+}
+
+void scoreTiles(void){
+    static uint8_t ones = 0;
+    static uint8_t tens = 0;
+    static uint8_t hundreds = 0;
+    static uint8_t thousands = 0;
+
+    score++;
+    ones++;
+
+    if (ones >= 10) {
+        tens++;
+        ones = 0;
+    }
+    
+    if (tens >= 10) {
+        hundreds++;
+        tens = 0;
+    }
+    
+    if (hundreds >= 10) {
+        thousands++;
+        hundreds = 0;
+    }
+
+    setScoreTile(16, thousands);
+    setScoreTile(17, hundreds+58);
+    setScoreTile(18, tens+58);
+    setScoreTile(19, ones+58);
+}
+
 void setHoop(uint8_t x, uint8_t y, const uint8_t *hoopAttributes, const uint8_t *hoopMap){
     VBK_REG = 1;
     set_bkg_tiles(x, y, 3, 3, hoopAttributes);
@@ -232,6 +272,8 @@ void rotateHoops(uint8_t index){
 
 void balls(struct Balls *b, uint8_t i, uint8_t ballSpeed){
     b->baseSprite = i * 4;
+    uint8_t currentTileId;
+
     switch (b->ballDirect){
             case 0:
                 if (b->y != 28){
@@ -270,6 +312,16 @@ void balls(struct Balls *b, uint8_t i, uint8_t ballSpeed){
                     move_sprite(b->baseSprite + 1, b->x, b->y + 8);
                     move_sprite(b->baseSprite + 3, b->x + 8, b->y + 8);
                 } else {
+                    get_bkg_tiles(9, 1, 1, 1, &currentTileId);
+                    if (b->paletteIndex == 0 && currentTileId == 1){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 1 && currentTileId == 18){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 2 && currentTileId == 27){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 3 && currentTileId == 36){
+                        scoreTiles();
+                    }
                     b->x = 76;
                     b->y = 84;
                     b->paletteIndex = (rand() % 4);
@@ -312,6 +364,16 @@ void balls(struct Balls *b, uint8_t i, uint8_t ballSpeed){
                     move_sprite(b->baseSprite + 1, b->x, b->y + 8);
                     move_sprite(b->baseSprite + 3, b->x + 8, b->y + 8);
                 } else {
+                    get_bkg_tiles(9, 15, 1, 1, &currentTileId);
+                    if (b->paletteIndex == 0 && currentTileId == 1){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 1 && currentTileId == 18){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 2 && currentTileId == 27){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 3 && currentTileId == 36){
+                        scoreTiles();
+                    }
                     b->x = 76;
                     b->y = 84;
                     b->paletteIndex = (rand() % 4);
@@ -356,6 +418,16 @@ void balls(struct Balls *b, uint8_t i, uint8_t ballSpeed){
                     move_sprite(b->baseSprite + 1, b->x, b->y + 8);
                     move_sprite(b->baseSprite + 3, b->x + 8, b->y + 8);
                 } else {
+                    get_bkg_tiles(2, 18, 1, 1, &currentTileId);
+                    if (b->paletteIndex == 0 && currentTileId == 1){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 1 && currentTileId == 18){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 2 && currentTileId == 27){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 3 && currentTileId == 36){
+                        scoreTiles();
+                    }
                     b->x = 76;
                     b->y = 84;
                     b->paletteIndex = (rand() % 4);
@@ -400,6 +472,16 @@ void balls(struct Balls *b, uint8_t i, uint8_t ballSpeed){
                     move_sprite(b->baseSprite + 1, b->x, b->y + 8);
                     move_sprite(b->baseSprite + 3, b->x + 8, b->y + 8);
                 } else {
+                    get_bkg_tiles(16, 8, 1, 1, &currentTileId);
+                    if (b->paletteIndex == 0 && currentTileId == 1){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 1 && currentTileId == 18){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 2 && currentTileId == 27){
+                        scoreTiles();
+                    } else if (b->paletteIndex == 3 && currentTileId == 36){
+                        scoreTiles();
+                    }
                     b->x = 76;
                     b->y = 84;
                     b->paletteIndex = (rand() % 4);
@@ -418,7 +500,7 @@ void initMainLevelTiles(void){
 
     set_bkg_palette(0, 5, backgroundPalettes);
 
-    set_bkg_data(0, 58, bgTiles);
+    set_bkg_data(0, 68, bgTiles);
 
     VBK_REG = 1;
     set_bkg_tiles(0, 0, 20, 18, MainLevelBackgroundPLN1);
