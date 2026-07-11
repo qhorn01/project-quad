@@ -5,12 +5,6 @@
 #ifndef LOAD_SCREENS
 #define LOAD_SCREENS
 
-typedef enum {
-    START,
-    MAIN_LEVEL,
-    GAMEOVER
-} GameState;
-
 struct Balls {
     uint8_t x;
     uint8_t y;

@@ -6,7 +6,8 @@
 #include "ballTiles.h"
 #include "mainLevelBackground.h"
 #include "backgroundTilesAndHoops.h"
-#include "loadScreens.h"
+#include "loadMainLevel.h"
+#include "globalTypes.h"
 
 extern GameState currentState;
 
@@ -162,15 +163,10 @@ void scoreTiles(void){
         hundreds = 0;
     }
 
-    uint8_t onesOffset = ones + 58;
-    uint8_t tensOffset = tens + 58;
-    uint8_t hundredsOffset = hundreds + 58;
-    uint8_t thousandsOffset = thousands + 58;
-
-    setScoreTile(16, thousandsOffset);
-    setScoreTile(17, hundredsOffset);
-    setScoreTile(18, tensOffset);
-    setScoreTile(19, onesOffset);
+    setScoreTile(16, thousands+58);
+    setScoreTile(17, hundreds+58);
+    setScoreTile(18, tens+58);
+    setScoreTile(19, ones+58);
 }
 
 void setHoop(uint8_t x, uint8_t y, const uint8_t *hoopAttributes, const uint8_t *hoopMap){
@@ -536,7 +532,7 @@ void initMainLevelLogic(void){
 
     balls(&ball[0], 0, 1); // first ball
 
-    //balls(&ball[1], 1, 2); // second ball
+    balls(&ball[1], 1, 2); // second ball
 
     if ((input & J_RIGHT) && !(previousInput & J_RIGHT)){
         turnHoops++;
